@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app/
 
 # 为了避免拉取错误，本地事先下载好
-COPY /home/duanyadong/actions-runner/_work/package/python/ /tmp/packages/
+COPY ./packages/ /tmp/packages/
 RUN pip install /tmp/packages/
 RUN rm -rf /tmp/packages/
 
