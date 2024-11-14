@@ -4,6 +4,9 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app/
 
+# 为了避免拉取错误，本地事先下载好
+RUN pip install /home/duanyadong/actions-runner/_work/package/python/mypy-1.11.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl
+
 # Install uv
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
 COPY --from=ghcr.io/astral-sh/uv:0.4.15 /uv /bin/uv
@@ -25,7 +28,6 @@ ENV UV_LINK_MODE=copy
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
     uv sync --frozen --no-install-project
 
 ENV PYTHONPATH=/app
