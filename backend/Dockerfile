@@ -4,11 +4,6 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app/
 
-# 为了避免拉取错误，本地事先下载好
-COPY ./packages/ /tmp/packages/
-RUN pip install --no-cache-dir /tmp/packages/*.whl
-RUN rm -rf /tmp/packages/
-
 # Install uv
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
 COPY --from=ghcr.io/astral-sh/uv:0.4.15 /uv /bin/uv
@@ -25,12 +20,15 @@ ENV UV_COMPILE_BYTECODE=1
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#caching
 ENV UV_LINK_MODE=copy
 
+# Set PIP_INDEX_URL to use Tsinghua University mirror
+ENV PIP_INDEX_URL=https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
+
 # Install dependencies
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#intermediate-layers
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --frozen --no-install-project --no-deps
+    uv sync --frozen --no-install-project
 
 ENV PYTHONPATH=/app
 
