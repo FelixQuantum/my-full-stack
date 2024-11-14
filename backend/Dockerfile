@@ -5,7 +5,9 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app/
 
 # 为了避免拉取错误，本地事先下载好
-RUN pip install /home/duanyadong/actions-runner/_work/package/python/mypy-1.11.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_28_x86_64.whl
+COPY /home/duanyadong/actions-runner/_work/package/python/ /tmp/packages/
+RUN pip install /tmp/packages/
+RUN rm -rf /tmp/packages/
 
 # Install uv
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
