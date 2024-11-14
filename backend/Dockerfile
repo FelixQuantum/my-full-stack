@@ -25,6 +25,7 @@ ENV UV_LINK_MODE=copy
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple \
     uv sync --frozen --no-install-project
 
 ENV PYTHONPATH=/app
