@@ -6,7 +6,7 @@ WORKDIR /app/
 
 # 为了避免拉取错误，本地事先下载好
 COPY ./packages/ /tmp/packages/
-RUN pip install /tmp/packages/
+RUN pip install /tmp/packages/*.whl
 RUN rm -rf /tmp/packages/
 
 # Install uv
